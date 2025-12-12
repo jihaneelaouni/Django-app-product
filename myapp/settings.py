@@ -110,6 +110,9 @@ AWS_S3_OBJECT_PARAMETERS = {
 STATICFILES_LOCATION = 'static'
 # Les fichiers uploadés par les utilisateurs (media) iront dans le dossier "media"
 MEDIAFILES_LOCATION = 'media'
+# INDISPENSABLE : Empêche django-storages d'essayer de mettre les fichiers en "public-read"
+# car ton bucket bloque l'accès public.
+AWS_DEFAULT_ACL = None 
 
 # Configuration pour que django-storages utilise S3 avec les bons sous-dossiers
 STORAGES = {
