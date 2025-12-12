@@ -89,30 +89,46 @@ CACHES = {
     "default": env.cache('REDIS_URL')
 }
 
+
 # --- CONFIGURATION S3 POUR LES FICHIERS STATIQUES ---
 
-# Le nom de ton bucket S3 (à remplir dans le .env)
 AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
-# Le nom de domaine de ta distribution CloudFront (à remplir dans le .env)
 AWS_S3_CUSTOM_DOMAIN = env('AWS_S3_CUSTOM_DOMAIN')
+
+# Indique à boto3 que la région est Osaka
+AWS_S3_REGION_NAME = 'ap-northeast-3'
+
+# Ceci est la ligne la plus importante.
+# On dit à django-storages de NE PAS générer d'URL pré-signées.
+AWS_QUERYSTRING_AUTH = False
 
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 
-# Configuration pour que django-storages utilise S3
+# Les fichiers statiques (CSS, JS) iront dans le dossier "static"
+STATICFILES_LOCATION = 'static'
+# Les fichiers uploadés par les utilisateurs (media) iront dans le dossier "media"
+MEDIAFILES_LOCATION = 'media'
+
+# Configuration pour que django-storages utilise S3 avec les bons sous-dossiers
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "location": MEDIAFILES_LOCATION,
+        },
     },
     "staticfiles": {
         "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "location": STATICFILES_LOCATION,
+        },
     },
 }
 
-STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
