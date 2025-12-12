@@ -1,0 +1,8 @@
+# requirements.txt
+
+django
+gunicorn
+mysqlclient
+django-environ
+boto3
+django-storages
