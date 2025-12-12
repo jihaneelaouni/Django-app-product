@@ -86,7 +86,7 @@ DATABASES['default']['OPTIONS'] = {
 # Cache (Redis)
 # https://docs.djangoproject.com/en/6.0/ref/settings/#caches
 CACHES = {
-    "default": env.cache()
+    "default": env.cache('REDIS_URL')
 }
 
 # --- CONFIGURATION S3 POUR LES FICHIERS STATIQUES ---
