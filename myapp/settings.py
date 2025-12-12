@@ -1,5 +1,4 @@
 # myapp/settings.py
-
 from pathlib import Path
 import environ
 import os
